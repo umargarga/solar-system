@@ -5,7 +5,6 @@ pipeline {
         nodejs 'nodejs-22-18-0'
     }
 
-
     stages {
         stage('VM Node Version') {
             steps {
