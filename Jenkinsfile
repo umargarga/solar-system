@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
+        MONGO_DB_CREDS = credentials('mongo-db-credentials')
     }
 
     stages {
@@ -29,22 +30,19 @@ pipeline {
         stage('Unit Testing') {
             // options { retry(2) }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
-                        sh 'npm test' 
-                    }
-                    
+                catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
+                    sh 'echo $MONGO_DB_CREDS'
+                    sh 'echo Username - $MONGO_DB_CREDS_USR'
+                    sh 'echo Password - $MONGO_DB_CREDS_PSW'
+                    sh 'npm test' 
                 }
             }
         }
 
         stage('Code Coverage') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
-                        sh 'npm run coverage'
-                    }
-
+                catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
+                    sh 'npm run coverage'
                 }
             }
         }
