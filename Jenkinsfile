@@ -50,5 +50,11 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t umargarga/solar-system:$GIT_COMMIT .'
+            }
+        }
+
     }
 }
