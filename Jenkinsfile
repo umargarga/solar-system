@@ -59,7 +59,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry(credentialsId: 'docker-hub-credentials', url: "") {
-                    sh 'docker push umargarga/solar-system:$GIT_COMMIT .'
+                    sh 'docker push umargarga/solar-system:$GIT_COMMIT'
                 }
                 
             }
