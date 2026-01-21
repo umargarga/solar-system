@@ -10,6 +10,8 @@ pipeline {
         MONGO_DB_CREDS = credentials('mongo-db-credentials')
         MONGO_USERNAME = credentials('mongo-db-usernmae')
         MONGO_PASSWORD = credentials('mongo-db-password')
+        PATH = "/Users/umardayyabu/.docker/bin:/usr/local/bin:$PATH"
+
 
     }
 
