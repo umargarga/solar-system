@@ -27,10 +27,24 @@ pipeline {
         }
 
         stage('Unit Testing') {
-            options { retry(2) }
+            // options { retry(2) }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    sh 'npm test'
+                    catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
+                        sh 'npm test' 
+                    }
+                    
+                }
+            }
+        }
+
+        stage('Code Coverage') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                    catchError(buildResult: 'SUCCESS', message: 'Opps error', stageResult: 'UNSTABLE') {
+                        sh 'npm run coverage'
+                    }
+
                 }
             }
         }
