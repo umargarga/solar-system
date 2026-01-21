@@ -56,6 +56,15 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: "") {
+                    sh 'docker push umargarga/solar-system:$GIT_COMMIT .'
+                }
+                
+            }
+        }
+
         // stage('Trivy Vulnerability Scanner') {
         //     steps {
         //         sh '''
@@ -74,15 +83,6 @@ pipeline {
         //     }
            
         // }
-
-        stage('Push Docker Image') {
-            steps {
-                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: "") {
-                    sh 'docker push -t umargarga/solar-system:$GIT_COMMIT .'
-                }
-                
-            }
-        }
 
     }
 }
